@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget coursesList() {
-    return Center(
+    /*return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -90,6 +90,39 @@ class _MyHomePageState extends State<MyHomePage> {
           const Padding(padding: EdgeInsets.only(bottom: 25)),
         ],
       ),
+    );*/
+    return GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemCount: _courses.length,
+        itemBuilder: (context, index) {
+          Course course = _courses[index];
+          return Card(
+            color: Colors.cyan,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Expanded(child: Image.network(course.image)),
+                  const Divider(color: Colors.white),
+                  Text(
+                    course.title,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                  Text(
+                    course.price.toString(),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
     );
   }
 
