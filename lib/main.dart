@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );*/
     return GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
         itemCount: _courses.length,
         itemBuilder: (context, index) {
           Course course = _courses[index];
@@ -115,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     textAlign: TextAlign.start,
                   ),
                   Text(
-                    course.price.toString(),
+                    "\$${course.price.toString()}",
                     style: const TextStyle(color: Colors.white),
                   ),
                 ],
