@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
+import 'dart:convert';
 
 import './course.dart';
 
@@ -48,7 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> getCourses() async  {
     var response = await http.get(Uri.parse(url));
     if(response.statusCode == 200) {
-      _courses = convert.jsonDecode(response.body);
+      final parsedData = jsonDecode(response.body).cast<Map<String, dynamic>>();
+      _courses = parsedData.map<Course>((json) => Course.fromJson(json)).toList();
       setState(() {
         loading = !loading;
       });
@@ -85,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text("DATA OK! ${_courses[1]}"),
+          Text("DATA OK! ${_courses[3].description}"),
           const Padding(padding: EdgeInsets.only(bottom: 25)),
         ],
       ),
