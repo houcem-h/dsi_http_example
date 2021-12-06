@@ -10,15 +10,31 @@ class  Course {
   List goals;
   List requirements;
 
-  Course(
-      this.id,
-      this.title,
-      this.description,
-      this.image,
-      this.last_update,
-      this.instructor,
-      this.language,
-      this.price,
-      this.goals,
-      this.requirements);
+  Course({
+      required this.id,
+      required this.title,
+      required this.description,
+      required this.image,
+      required this.last_update,
+      required this.instructor,
+      required this.language,
+      required this.price,
+      required this.goals,
+      required this.requirements
+});
+
+  factory Course.fromJson(Map<String, dynamic> json) {
+    return Course(
+        id: json['id'],
+        title: json['title'],
+        description: json['description'],
+        image: json['image'],
+        last_update: json['last_update'],
+        instructor: json['instructor'],
+        language: json['language'],
+        price: json['price'],
+        goals: json['goals'],
+        requirements: json['requirements']
+    );
+  }
 }
