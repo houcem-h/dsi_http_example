@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+
+import './course.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'HTTP example'),
+      home: const MyHomePage(title: 'HTTP JSON API'),
     );
   }
 }
@@ -31,22 +35,62 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  final String url = 'https://my-json-server.typicode.com/houcem-h/public_courses_api/courses';
+  List<dynamic> _courses = [];
+  bool loading = true;
+
+  @override
+  void initState() {
+    getCourses();
+    super.initState();
+  }
+
+  Future<void> getCourses() async  {
+    var response = await http.get(Uri.parse(url));
+    if(response.statusCode == 200) {
+      _courses = convert.jsonDecode(response.body);
+      setState(() {
+        loading = !loading;
+      });
+    } else {
+      throw Exception('Failed to load courses');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Clean app',
-            ),
-          ],
-        ),
+      body: loading ? waitingScreen() : coursesList()
+    );
+  }
+
+  Widget waitingScreen() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const <Widget>[
+          Text("Loading data ..."),
+          Padding(padding: EdgeInsets.only(bottom: 25)),
+          CircularProgressIndicator()
+        ],
       ),
     );
   }
+
+  Widget coursesList() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text("DATA OK! ${_courses[1]}"),
+          const Padding(padding: EdgeInsets.only(bottom: 25)),
+        ],
+      ),
+    );
+  }
+
+
 }
